@@ -1,0 +1,1 @@
+keep debug and find out where destroy error occur.
