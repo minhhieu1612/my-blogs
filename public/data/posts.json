@@ -1,0 +1,15 @@
+{
+  "status": true,
+  "data": [{
+    "id": "adf",
+    "title": "post title 1",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, velit quam eveniet dolores facere voluptates consequatur. Quidem labore molestiae dolorem.",
+    "createdDate": "Tue Apr 12 2022 16:43:17 GMT+0700 (Indochina Time)"
+  },
+  {
+    "id": "abc",
+    "title": "post title 2",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, velit quam eveniet dolores facere voluptates consequatur. Quidem labore molestiae dolorem.",
+    "createdDate": "Tue Apr 12 2022 16:43:17 GMT+0700 (Indochina Time)"
+  }]
+}

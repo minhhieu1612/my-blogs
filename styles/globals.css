@@ -30,3 +30,7 @@ a {
 .editorial-toolbar-btn.\--active {
   @apply opacity-100;
 }
+
+[href] {
+  @apply hover:text-primary-700;
+}

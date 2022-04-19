@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/EditorBlock/editorTools.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/EditorBlock/editorTools.js", "models/index.ts", "models/Post.ts", "md-seed-config.js"],
   "exclude": ["./node_modules"]
 }

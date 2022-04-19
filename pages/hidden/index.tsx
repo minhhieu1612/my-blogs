@@ -13,7 +13,7 @@ const HiddenPage: NextPage = () => {
           Welcome to Admin site 🚀
         </h1>
         <hr />
-        <EditorBlock />
+        {/* <EditorBlock /> */}
       </div>
     </div>
   );

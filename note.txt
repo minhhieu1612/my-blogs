@@ -1,1 +1,3 @@
-keep debug and find out where destroy error occur.
++ local storage for dark mode
++ login/out site admin
++ connect mongodb 
