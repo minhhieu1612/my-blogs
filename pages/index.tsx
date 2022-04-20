@@ -1,8 +1,11 @@
 import type { NextPage } from "next";
 import Layout from "../components/Layout";
-import Posts from "../components/Posts";
+import Posts, { PostType } from "../components/Posts";
+import { WithProps } from "../interfaces/index.types";
+import ApiCaller from "../utils/services/ApiCaller";
+import endpoints from "../utils/services/endpoints";
 
-const Home: NextPage = () => {
+const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
   return (
     <Layout title="This is Calvin's blog">
       <div className="dark:bg-black dark:text-white py-5">
@@ -14,31 +17,27 @@ const Home: NextPage = () => {
 
           <div className="posts">
             <h2 className="text-3xl font-bold mb-2">Posts</h2>
-            <Posts
-              posts={[
-                {
-                  id: "adf",
-                  title: "post title 1",
-                  description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                    Error, velit quam eveniet dolores facere voluptates consequatur. 
-                    Quidem labore molestiae dolorem.`,
-                  createdDate: new Date(),
-                },
-                {
-                  id: "adf",
-                  title: "post title 2",
-                  description: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-                    Error, velit quam eveniet dolores facere voluptates consequatur. 
-                    Quidem labore molestiae dolorem.`,
-                  createdDate: new Date(),
-                },
-              ]}
-            />
+            <Posts posts={posts} />
           </div>
         </div>
       </div>
     </Layout>
   );
 };
+
+export async function getStaticProps(): Promise<
+  WithProps<{ posts: PostType[] }>
+> {
+  const response = await ApiCaller({
+    method: "get",
+    url: endpoints.POSTS
+  });
+
+  if (response.status) {
+    return { props: { posts: response.data as any } };
+  }
+
+  return { props: { posts: [] } };
+}
 
 export default Home;

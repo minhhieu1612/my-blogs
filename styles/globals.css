@@ -32,5 +32,18 @@ a {
 }
 
 [href] {
-  @apply hover:text-primary-700;
+  @apply hover:text-primary-500 dark:hover:hover:text-primary-400;
+}
+
+.limit-3-lines {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+          line-clamp: 3; 
+  -webkit-box-orient: vertical;
+}
+
+.btn-primary {
+  @apply bg-primary-500 text-white hover:bg-primary-600 px-4 py-1;
 }

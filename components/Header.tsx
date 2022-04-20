@@ -1,19 +1,24 @@
 import Link from "next/link";
-import useStateWithCallback from "../utils/hooks/useStateWithCallback";
+import { useEffect, useState } from "react";
 import Switch from "./Switch";
 
 const Header = () => {
-  const [isDarkMode, setDarkMode] = useStateWithCallback(false);
+  const [isDarkMode, setDarkMode] = useState(
+    JSON.parse(window.localStorage.getItem("isDarkMode") as string) || false
+  );
 
   const handleToggleDarkMode = () => {
-    setDarkMode(!isDarkMode, (latestState) => {
-      if (latestState) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    });
+    setDarkMode(!isDarkMode);
   };
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    window.localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
 
   return (
     <header className="py-5 border-b border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 dark:text-white">

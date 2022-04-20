@@ -13,8 +13,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "downlevelIteration": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/EditorBlock/editorTools.js", "models/index.ts", "models/Post.ts", "md-seed-config.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/EditorBlock/editorTools.js", "models/connectToDatabase.js", "models/post/post.js", "md-seed-config.js"],
   "exclude": ["./node_modules"]
 }

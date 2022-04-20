@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-export default async function ApiCaller<T>(opt: AxiosRequestConfig<T>) {
+export default async function ApiCaller<T>(opt: AxiosRequestConfig) {
   try {
     const response = await axios(opt);
 
@@ -14,19 +14,17 @@ export default async function ApiCaller<T>(opt: AxiosRequestConfig<T>) {
       // console.log('err res data', error.response.data);
       // console.log('err res status', error.response.status);
       // console.log('err res headers', error.response.headers);
-      message = "error happen when response";
+      message = "Error happen when response!!!";
     } else if (error.request) {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      message = "error happen when request";
+      message = "Error happen when request!!!";
     } else {
       // Something happened in setting up the request that triggered an Error
-      message = "some thing wrong happern";
+      message = "Some thing wrong happen!!!";
     }
-    message = "error config" + error.config;
-
-    console.log(message);
+    message = "Something wrong with config!!!";
 
     return { status: false, message };
   }

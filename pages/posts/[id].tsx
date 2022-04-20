@@ -1,18 +1,22 @@
-import { useRouter } from "next/router";
+import { NextPage } from "next";
 import Layout from "../../components/Layout";
 import { PostType } from "../../components/Posts";
 import { WithParams, WithProps } from "../../interfaces/index.types";
+import formatDate from "../../utils/built-ins/formatDate";
 import ApiCaller from "../../utils/services/ApiCaller";
+import endpoints from "../../utils/services/endpoints";
 
-const PostDetailPage = ({ id }: { id: string }) => {
-  const router = useRouter();
-  console.log('====================================');
-  console.log('query: ', router.query);
-  console.log('====================================');
+const PostDetailPage: NextPage<{ post: PostType }> = ({ post }) => {
   return (
     <Layout>
-      <div className="page-container">
-        <h3 className="text-2xl">this is page for post number: {id}</h3>
+      <div className="dark:bg-black dark:text-white">
+        <div className="page-container pt-8 pb-16">
+          <h3 className="text-3xl font-bold pb-2">{post.title}</h3>
+          <div className="text-gray-400">{formatDate(post.createdDate)}</div>
+          <div className="py-5">
+            <p>{post.description}</p>
+          </div>
+        </div>
       </div>
     </Layout>
   );
@@ -20,18 +24,18 @@ const PostDetailPage = ({ id }: { id: string }) => {
 
 export async function getStaticPaths(): Promise<{
   paths: WithParams<{ id: string }>[];
-  fallback: boolean;
+  fallback: boolean | string;
 }> {
-  const response = await ApiCaller<{ status: boolean; data: PostType[] }>({
+  const response = await ApiCaller<PostType[]>({
     method: "get",
-    url: "http://localhost:3000/data/posts.json",
+    url: endpoints.POSTS,
   });
 
   if (response.status) {
     return {
-      paths: response.data?.data?.length
-        ? response.data.data.map(({ id }) => ({
-            params: { id },
+      paths: response.data?.length
+        ? response.data.map(({ _id }) => ({
+            params: { id: _id },
           }))
         : [],
       fallback: false,
@@ -40,14 +44,24 @@ export async function getStaticPaths(): Promise<{
 
   return {
     paths: [],
-    fallback: true,
+    fallback: false,
   };
 }
 
 export async function getStaticProps({
   params: { id },
-}: WithParams<{ id: string }>): Promise<WithProps<{id: string}>> {
-  return { props: { id } };
+}: WithParams<{ id: string }>): Promise<WithProps<{ post: PostType | null }>> {
+  const response = await ApiCaller({
+    method: "get",
+    url: endpoints.POSTS,
+    params: { id },
+  });
+
+  if (response.status) {
+    return { props: { post: response.data as PostType } };
+  }
+
+  return { props: { post: null } };
 }
 
 export default PostDetailPage;

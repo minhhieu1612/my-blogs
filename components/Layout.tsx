@@ -1,7 +1,9 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import React, { PropsWithChildren } from "react";
 import Footer from "./Footer";
-import Header from "./Header";
+// import Header from "./Header";
+const Header = dynamic(() => import("./Header"), {ssr: false});
 
 const Layout = ({
   title = '',

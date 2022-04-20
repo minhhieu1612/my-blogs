@@ -9,7 +9,7 @@ const Switch = ({
     <div
       className={`relative border-2 ${
         stateSwitch
-          ? "border-primary-800 bg-primary-800"
+          ? "border-primary-500 bg-primary-500"
           : "border-black bg-black"
       } w-11 h-6 cursor-pointer`}
       style={{ padding: "2px" }}
