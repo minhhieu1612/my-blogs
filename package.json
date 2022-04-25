@@ -29,6 +29,8 @@
     "@editorjs/warning": "^1.2.0",
     "@loadable/component": "^5.15.2",
     "@tailwindcss/typography": "^0.5.2",
+    "@tiptap/extension-image": "^2.0.0-beta.27",
+    "@tiptap/extension-link": "^2.0.0-beta.36",
     "@tiptap/react": "^2.0.0-beta.108",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "@types/bcrypt": "^5.0.0",
@@ -57,5 +59,6 @@
     "eslint-config-next": "12.1.4",
     "tailwindcss": "^3.0.23",
     "typescript": "4.6.3"
-  }
+  },
+  "license": "UNLICENSED"
 }

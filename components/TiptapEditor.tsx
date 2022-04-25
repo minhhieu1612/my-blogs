@@ -1,10 +1,19 @@
 import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { ReactElement, useEffect, useMemo } from "react";
-import { FaBold, FaCode, FaItalic, FaStrikethrough } from "react-icons/fa";
-import { MdHorizontalRule } from "react-icons/md";
+import TiptapLink from "@tiptap/extension-link";
+import TiptapImage from "@tiptap/extension-image";
+import { ReactElement, useCallback, useEffect, useMemo } from "react";
+import {
+  FaBold,
+  FaCode,
+  FaItalic,
+  FaRegImage,
+  FaStrikethrough,
+} from "react-icons/fa";
+import { MdHorizontalRule, MdOutlineCleaningServices } from "react-icons/md";
 import { GoListOrdered, GoListUnordered, GoQuote } from "react-icons/go";
 import { BsCodeSquare } from "react-icons/bs";
+import { AiOutlineLink } from "react-icons/ai";
 
 type ActiveButtonType = {
   onClick: () => void;
@@ -16,6 +25,37 @@ const MenuBar = ({ editor }: { editor: any }) => {
   if (!editor) {
     return null;
   }
+
+  const addImage = useCallback(() => {
+    const url = window.prompt("URL");
+
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  }, [editor]);
+
+  const setLink = useCallback(() => {
+    if (!editor) {
+      return;
+    }
+
+    const previousUrl = editor.getAttributes("link").href;
+    const url = window.prompt("URL", previousUrl);
+
+    // cancelled
+    if (url === null) {
+      return;
+    }
+
+    // empty:
+    if (url === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      return;
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  }, [editor]);
 
   const buttons: ActiveButtonType[] = [
     {
@@ -83,6 +123,10 @@ const MenuBar = ({ editor }: { editor: any }) => {
       activeCondition: editor.isActive("orderedList"),
     },
     {
+      onClick: addImage,
+      label: <FaRegImage />,
+    },
+    {
       onClick: () => editor.chain().focus().toggleCode().run(),
       label: <FaCode />,
       activeCondition: editor.isActive("code"),
@@ -101,10 +145,15 @@ const MenuBar = ({ editor }: { editor: any }) => {
       onClick: () => editor.chain().focus().setHorizontalRule().run(),
       label: <MdHorizontalRule />,
     },
-    // {
-    //   onClick: () => editor.chain().focus().clearNodes().run(),
-    //   label: <MdOutlineCleaningServices />,
-    // },
+    {
+      onClick: setLink,
+      label: <AiOutlineLink />,
+      activeCondition: editor.isActive("link"),
+    },
+    {
+      onClick: () => editor.chain().focus().clearNodes().run(),
+      label: <MdOutlineCleaningServices />,
+    },
     // {
     //   onClick: () => editor.chain().focus().setHardBreak().run(),
     //   label: <AiOutlineEnter />,
@@ -172,7 +221,7 @@ const TiptapEditor: React.FC<TiptapEditorPropsType> = ({
   );
 
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, TiptapLink, TiptapImage],
     content,
     ...DEFAULT_OPTIONS,
     onUpdate: ({ editor }) => {
