@@ -1,4 +1,4 @@
-export const BASE_URL = `${process.env.HOST}:${process.env.PORT}/api`;
+export const BASE_URL = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
 
 const endpoints = {
   POSTS: `${BASE_URL}/posts`,
