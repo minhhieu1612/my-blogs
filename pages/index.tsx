@@ -8,17 +8,14 @@ import endpoints from "../utils/services/endpoints";
 const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
   return (
     <Layout title="This is Calvin's blog">
-      <div className="dark:bg-black dark:text-white py-5">
-        <div className="page-container">
-          <div className="introduce-section pb-5">
-            <h2 className="text-3xl font-bold">About Me</h2>
-            <p>I am developer with a lot of special idea.</p>
-          </div>
-
-          <div className="posts">
-            <h2 className="text-3xl font-bold mb-2">Posts</h2>
-            <Posts posts={posts} />
-          </div>
+      <div className="page-container py-5">
+        <div className="introduce-section pb-5">
+          <h2 className="text-3xl font-bold">About Me</h2>
+          <p>I am developer with a lot of special idea.</p>
+        </div>
+        <div className="posts">
+          <h2 className="text-3xl font-bold mb-2">Posts</h2>
+          <Posts posts={posts} />
         </div>
       </div>
     </Layout>
@@ -30,7 +27,7 @@ export async function getStaticProps(): Promise<
 > {
   const response = await ApiCaller({
     method: "get",
-    url: endpoints.POSTS
+    url: endpoints.POSTS,
   });
 
   if (response.status) {

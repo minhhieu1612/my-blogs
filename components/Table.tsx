@@ -6,7 +6,7 @@ export type TableColumnType<T> = {
   name: string;
   title: string;
   width?: string;
-  render?: (label?: string, record?: T) => JSX.Element;
+  render?: (label: string, record: T) => JSX.Element | string;
 };
 
 export type TableDataSourceType = {

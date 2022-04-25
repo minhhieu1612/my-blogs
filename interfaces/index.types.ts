@@ -1,7 +1,9 @@
 export interface WithParams<T> {
-  params: T
+  params: T;
 }
 
 export interface WithProps<T> {
-  props: T
+  props: T;
 }
+
+export type OrNull<T> = T | null;

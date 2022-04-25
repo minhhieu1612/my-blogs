@@ -38,7 +38,7 @@ export default async function handler(
       {
         const resultHandler = await postHandler.insert(req.body);
         if (resultHandler.status) {
-          res.status(200).json(resultHandler.message);
+          res.status(200).json({ message: resultHandler.message });
         } else {
           res.status(500).json({ message: "something went wrong" });
         }
@@ -46,9 +46,11 @@ export default async function handler(
       break;
     case "PUT":
       {
+        console.log("in");
+
         const resultHandler = await postHandler.update(req.query.id, req.body);
         if (resultHandler.status) {
-          res.status(200).json(resultHandler.message);
+          res.status(200).json({ message: resultHandler.message });
         } else {
           res.status(500).json({ message: "something went wrong" });
         }
@@ -58,7 +60,7 @@ export default async function handler(
       {
         const resultHandler = await postHandler.delete(req.query.id);
         if (resultHandler.status) {
-          res.status(200).json(resultHandler.message);
+          res.status(200).json({ message: resultHandler.message });
         } else {
           res.status(500).json({ message: "something went wrong" });
         }

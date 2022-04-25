@@ -1,13 +1,8 @@
 import { NextPage } from "next";
 import { FormEvent, useState } from "react";
-// import dynamic from "next/dynamic";
-import EditorBlock from "../../components/EditorBlock";
 import useUser from "../../libs/useUser";
 import ApiCaller from "../../utils/services/ApiCaller";
 import { User } from "../api/user";
-// const EditorBlock = dynamic(() => import("../../components/EditorBlock"), {
-//   ssr: false,
-// });
 
 const LoginPage: NextPage = () => {
   const [message, setMessage] = useState("");

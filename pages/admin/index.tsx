@@ -1,27 +1,37 @@
+import moment from "moment";
 import { NextPage } from "next";
-import Image from "next/image";
-// import dynamic from "next/dynamic";
-import EditorBlock from "../../components/EditorBlock";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { FiEdit, FiTrash } from "react-icons/fi";
+import LayoutAdmin from "../../components/LayoutAdmin";
 import { PostType } from "../../components/Posts";
 import Table, { TableColumnType } from "../../components/Table";
 import { WithProps } from "../../interfaces/index.types";
-// const EditorBlock = dynamic(() => import("../../components/EditorBlock"), {
-//   ssr: false,
-// });
-
-import useUser from "../../libs/useUser";
+import { DEFAULT_DATE_FORMAT } from "../../utils/constants";
 import ApiCaller from "../../utils/services/ApiCaller";
 import endpoints from "../../utils/services/endpoints";
-import { User } from "../api/user";
 
 const AdminPage: NextPage<{ posts: PostType[] }> = ({ posts }) => {
-  const { user, mutateUser } = useUser({ redirectTo: "/admin/login" });
+  const router = useRouter();
 
-  const handleLogout = async () => {
-    const response = await ApiCaller({ method: "post", url: "/api/logout" });
+  const resfreshPage = () => {
+    router.replace(router.asPath);
+  };
 
-    if (response.status) {
-      mutateUser(response.data as User);
+  const handleDeletePost = async (id: string) => {
+    if (confirm("Do you want to delete this post!!!")) {
+      const response = await ApiCaller<{ message: string }>({
+        method: "delete",
+        url: "/api/posts",
+        params: { id },
+      });
+
+      if (response.status) {
+        resfreshPage();
+        alert(response.data?.message);
+      } else {
+        alert(response.data?.message);
+      }
     }
   };
 
@@ -36,74 +46,60 @@ const AdminPage: NextPage<{ posts: PostType[] }> = ({ posts }) => {
       key: "title",
       name: "title",
       title: "Title",
-      width: "25%",
+      width: "45%",
     },
     {
-      key: "description",
-      name: "description",
-      title: "Description",
-      width: "55%",
-      render: (label) => <div className="limit-3-lines">{label}</div>,
+      key: "createdDate",
+      name: "createdDate",
+      title: "Created Date",
+      width: "25%",
+      render: (label: string) => moment(label).format(DEFAULT_DATE_FORMAT),
     },
     {
       key: "action",
       name: "action",
       title: "",
-      width: "10%",
+      width: "25%",
       render: (_label, item) => (
-        <div className="">
-          <button className="btn-primary">edit: {item?.title}</button>
+        <div>
+          <Link href={`/admin/posts/${item?._id}/edit`} passHref>
+            <button className="btn-primary mr-3">
+              <FiEdit />
+            </button>
+          </Link>
+          <button
+            className="btn-danger"
+            onClick={() => handleDeletePost(item._id)}
+          >
+            <FiTrash />
+          </button>
         </div>
       ),
     },
   ];
 
   return (
-    <div className="bg-gray-800 text-white">
-      {user?.isLoggedIn && user.login ? (
-        <div>
-          <header className="border-b border-gray-500">
-            <div className="page-container flex">
-              <h1 className="text-3xl font-semibold py-5">
-                Welcome to Admin site 🚀
-              </h1>
-              <button
-                className="ml-auto hover:text-primary-500"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          </header>
-          <div className="page-container">
-            <div className="min-h-screen">
-              <button className="btn-primary mt-4 mb-6">Add +</button>
-              <Table
-                dataSource={posts.map((item, index) => ({
-                  key: item._id,
-                  order: index + 1,
-                  ...item,
-                }))}
-                column={PostColumn}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="min-h-screen flex items-center justify-center">
-          <Image
-            src="/images/a4f2cb80ff2ae2772e80bf30e9d78d4c.gif"
-            width={100}
-            height={100}
-            alt=""
+    <LayoutAdmin title="Admin Dashboard">
+      <div className="page-container">
+        <div className="min-h-screen">
+          <Link href="/admin/posts/create" passHref>
+            <button className="btn-primary mt-4 mb-6">Add +</button>
+          </Link>
+          <Table
+            dataSource={posts.map((item, index) => ({
+              key: item._id,
+              order: index + 1,
+              ...item,
+            }))}
+            column={PostColumn}
           />
         </div>
-      )}
-    </div>
+      </div>
+    </LayoutAdmin>
   );
 };
 
-export async function getStaticProps(): Promise<
+export async function getServerSideProps(): Promise<
   WithProps<{ posts: PostType[] }>
 > {
   const response = await ApiCaller<PostType[]>({

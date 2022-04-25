@@ -4,6 +4,9 @@ const CRUD_MESSAGE = {
   DELETE: (name) => `the record ${(name && `of ${name}`) || ''} has been deleted succesfully!!`,
 }
 
+const DEFAULT_DATE_FORMAT = "MMMM Do YYYY, h:mm:ss a";
+
 module.exports = {
-  CRUD_MESSAGE
+  CRUD_MESSAGE,
+  DEFAULT_DATE_FORMAT
 }

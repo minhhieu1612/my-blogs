@@ -18,7 +18,7 @@ const Layout = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main>{children}</main>
+      <main className="dark:bg-gray-800 dark:text-white">{children}</main>
       <Footer />
     </div>
   );

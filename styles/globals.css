@@ -31,8 +31,8 @@ a {
   @apply opacity-100;
 }
 
-[href] {
-  @apply hover:text-primary-500 dark:hover:hover:text-primary-400;
+[href]:not([class*="btn"]) {
+  @apply hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer;
 }
 
 .limit-3-lines {
@@ -44,6 +44,30 @@ a {
   -webkit-box-orient: vertical;
 }
 
+.btn-default {
+  @apply px-4 py-1;
+}
+
 .btn-primary {
   @apply bg-primary-500 text-white hover:bg-primary-600 px-4 py-1;
+}
+
+.btn-success {
+  @apply btn-default bg-emerald-500 text-white hover:bg-emerald-600 ;
+}
+
+.btn-info {
+  @apply btn-default bg-sky-500 text-white hover:bg-sky-600 ;
+}
+
+.btn-danger {
+  @apply btn-default bg-orange-500 text-white hover:bg-orange-700 ;
+}
+
+.tiptap-editor .ProseMirror-focused {
+  @apply outline-none border border-gray-300;
+}
+
+.ProseMirror p {
+  @apply my-4;
 }

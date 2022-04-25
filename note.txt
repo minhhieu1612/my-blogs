@@ -1,8 +1,7 @@
-+ local storage for dark mode
-+ login/out site admin
-+ crud task for manage post data.
++ editor can view link, image,...
 
 
 * bonus point:
 + choose better migrate package which support Typescript and work with no error. 
 + write some bash command to automatic select json file and execute it.
+How to build a Nextjs application with MongoDB and deploy on Vercel
