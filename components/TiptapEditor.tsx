@@ -1,6 +1,6 @@
 import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useMemo } from "react";
 import { FaBold, FaCode, FaItalic, FaStrikethrough } from "react-icons/fa";
 import { MdHorizontalRule } from "react-icons/md";
 import { GoListOrdered, GoListUnordered, GoQuote } from "react-icons/go";
@@ -160,13 +160,17 @@ const TiptapEditor: React.FC<TiptapEditorPropsType> = ({
   autofocus = false,
   hasMenu = false,
   shorterContent = false,
-  className = ''
+  className = "",
 }) => {
-  const DEFAULT_OPTIONS = {
-    autofocus,
-    editable,
-    injectCSS: false,
-  };
+  const DEFAULT_OPTIONS = useMemo(
+    () => ({
+      autofocus,
+      editable,
+      injectCSS: false,
+    }),
+    [autofocus, editable]
+  );
+
   const editor = useEditor({
     extensions: [StarterKit],
     content,
@@ -180,15 +184,17 @@ const TiptapEditor: React.FC<TiptapEditorPropsType> = ({
     editor &&
       editor.setOptions &&
       editor.setOptions({ ...DEFAULT_OPTIONS, editable, autofocus });
-  }, [editable, autofocus]);
+  }, [editable, autofocus, editor, DEFAULT_OPTIONS]);
 
   return (
     <div>
       {hasMenu && <MenuBar editor={editor} />}
       <EditorContent
         editor={editor}
-        className={`prose dark:prose-invert max-w-none ${shorterContent && 'max-h-16 overflow-hidden'} tiptap-editor ${className}`}
-        placeholder='Type anything here...'
+        className={`prose dark:prose-invert max-w-none ${
+          shorterContent && "max-h-16 overflow-hidden"
+        } tiptap-editor ${className}`}
+        placeholder="Type anything here..."
       />
     </div>
   );

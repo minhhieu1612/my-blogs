@@ -1,5 +1,6 @@
 import { forwardRef, LegacyRef, PropsWithChildren } from "react";
-import { BaseProps, OrNull } from "./index.type";
+import { OrNull } from "../../interfaces/index.types";
+import { BaseProps } from "./index.type";
 
 const Button = forwardRef(function Button(
   {
