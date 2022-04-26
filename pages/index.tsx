@@ -11,7 +11,11 @@ const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
       <div className="page-container py-5">
         <div className="introduce-section pb-5">
           <h2 className="text-3xl font-bold">About Me</h2>
-          <p>I am developer with a lot of special idea.</p>
+          <p>
+            A dedicated, diligent, ready-to-learn person. I am passionate about
+            clean code, software architecture, and sharing knowledge. Specialize
+            in JS/TS and more... ✨✨🚀
+          </p>
         </div>
         <div className="posts">
           <h2 className="text-3xl font-bold mb-2">Posts</h2>
