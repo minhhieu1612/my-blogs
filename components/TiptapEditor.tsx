@@ -22,10 +22,6 @@ type ActiveButtonType = {
 };
 
 const MenuBar = ({ editor }: { editor: any }) => {
-  if (!editor) {
-    return null;
-  }
-
   const addImage = useCallback(() => {
     const url = window.prompt("URL");
 
