@@ -20,7 +20,7 @@ a {
 }
 
 .page-container {
-  @apply sm:w-full md:w-10/12 lg:w-3/4 px-5 mx-auto;
+  @apply px-5 mx-auto sm:w-full md:w-10/12 lg:w-3/4;
 }
 
 .editorial-toolbar-btn {
@@ -32,7 +32,7 @@ a {
 }
 
 [href]:not([class*="btn"]) {
-  @apply hover:text-primary-500 dark:hover:text-primary-400 cursor-pointer;
+  @apply cursor-pointer hover:text-primary-500 dark:hover:text-primary-400;
 }
 
 .limit-3-lines {
@@ -40,7 +40,7 @@ a {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
-          line-clamp: 3; 
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -49,25 +49,30 @@ a {
 }
 
 .btn-primary {
-  @apply bg-primary-500 text-white hover:bg-primary-600 px-4 py-1;
+  @apply px-4 py-1 text-white bg-primary-500 hover:bg-primary-600;
 }
 
 .btn-success {
-  @apply btn-default bg-emerald-500 text-white hover:bg-emerald-600 ;
+  @apply text-white btn-default bg-emerald-500 hover:bg-emerald-600;
 }
 
 .btn-info {
-  @apply btn-default bg-sky-500 text-white hover:bg-sky-600 ;
+  @apply text-white btn-default bg-sky-500 hover:bg-sky-600;
 }
 
 .btn-danger {
-  @apply btn-default bg-orange-500 text-white hover:bg-orange-700 ;
+  @apply text-white bg-orange-500 btn-default hover:bg-orange-700;
 }
 
 .tiptap-editor .ProseMirror-focused {
-  @apply outline-none border border-gray-300;
+  @apply border border-gray-300 outline-none;
 }
 
 .ProseMirror p {
   @apply my-4;
+}
+
+.prose :where(hr):not(:where([class~="not-prose"] *)) {
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
