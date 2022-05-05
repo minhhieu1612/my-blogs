@@ -1,5 +1,5 @@
 import Link from "next/link";
-import moment from 'moment';
+import moment from "moment";
 import TiptapEditor from "./TiptapEditor";
 
 export type PostType = {
@@ -21,7 +21,9 @@ const Posts = ({ posts }: { posts: PostType[] }) => {
           <Link href={`/posts/${_id}`} passHref>
             <div className="block p-5 cursor-pointer">
               <h3 className="post-title text-2xl mb-3 font-bold">{title}</h3>
-              <div className="text-gray-400 text-xs -mt-2 mb-3">updated {moment(updatedDate).fromNow()}</div>
+              <div className="text-gray-400 text-xs -mt-2">
+                updated {moment(updatedDate).fromNow()}
+              </div>
               <TiptapEditor content={description} shorterContent={true} />
             </div>
           </Link>

@@ -1,8 +1,10 @@
 import moment from "moment";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import LayoutAdmin from "../../../../components/LayoutAdmin";
+import Loader from "../../../../components/Loader";
 import { PostType } from "../../../../components/Posts";
 import TiptapEditor from "../../../../components/TiptapEditor";
 import {
@@ -15,6 +17,7 @@ import ApiCaller from "../../../../utils/services/ApiCaller";
 import endpoints from "../../../../utils/services/endpoints";
 
 const AdminPostEditDetail: NextPage<{ post: PostType }> = ({ post }) => {
+  const [loading, setLoading] = useState(false);
   const titleRef = useRef<OrNull<HTMLHeadingElement>>(null);
   const [isEditing, setEditing] = useState(false);
   const [htmlDescription, setHTMLDescription] = useState(post.description);
@@ -25,7 +28,14 @@ const AdminPostEditDetail: NextPage<{ post: PostType }> = ({ post }) => {
     }
   };
 
+  const router = useRouter();
+
+  const resfreshPage = () => {
+    router.replace(router.asPath);
+  };
+
   const handleSubmit = async () => {
+    setLoading(true);
     const response = await ApiCaller<{ message: string }>({
       method: "put",
       url: "/api/posts",
@@ -38,28 +48,30 @@ const AdminPostEditDetail: NextPage<{ post: PostType }> = ({ post }) => {
       },
     });
 
+    setLoading(false);
+
     if (!response.status) {
       alert(response.data?.message);
-      setHTMLDescription(post.description);
     } else {
       alert(response.data?.message);
+      resfreshPage();
       setEditing(false);
     }
   };
 
   return (
     <LayoutAdmin>
-      <div className="page-container pt-8 pb-16">
+      <div className="pt-8 pb-16 page-container">
         {!isEditing ? (
           <button
-            className="btn-primary flex mb-3"
+            className="flex mb-3 btn-primary"
             onClick={() => setEditing(true)}
           >
-            Edit <FiEdit className="ml-2 mt-1" />
+            Edit <FiEdit className="mt-1 ml-2" />
           </button>
         ) : (
           <div className="flex mb-3">
-            <button className="btn-info mr-3" onClick={handleSubmit}>
+            <button className="mr-3 btn-info" onClick={handleSubmit}>
               Submit
             </button>
             <button
@@ -73,58 +85,66 @@ const AdminPostEditDetail: NextPage<{ post: PostType }> = ({ post }) => {
             </button>
           </div>
         )}
-        <h2
-          id="postTitle"
-          ref={(ref) => (titleRef.current = ref)}
-          className="text-3xl font-bold pb-2"
-          contentEditable={isEditing}
-        >
-          {post.title}
-        </h2>
-        <div className="text-gray-400 text-sm">
-          {formatDate(post.createdDate)} (updated{" "}
-          {moment(post.updatedDate).fromNow()})
+        <div className="relative">
+          {loading ? (
+            <Loader className="w-full min-h-screen" />
+          ) : (
+            <>
+              <h2
+                id="postTitle"
+                ref={(ref) => (titleRef.current = ref)}
+                className="pb-2 text-3xl font-bold"
+                contentEditable={isEditing}
+              >
+                {post.title}
+              </h2>
+              <div className="text-sm text-gray-400">
+                {formatDate(post.createdDate)} (updated{" "}
+                {moment(post.updatedDate).fromNow()})
+              </div>
+              <TiptapEditor
+                className="prose-invert"
+                content={post.description}
+                hasMenu={isEditing}
+                editable={isEditing}
+                autofocus={isEditing}
+                getHTMLContent={(data) => setHTMLDescription(data as string)}
+              />
+            </>
+          )}
         </div>
-        <TiptapEditor
-          className="prose-invert"
-          content={post.description}
-          hasMenu={isEditing}
-          editable={isEditing}
-          autofocus={isEditing}
-          getHTMLContent={(data) => setHTMLDescription(data as string)}
-        />
       </div>
     </LayoutAdmin>
   );
 };
 
-export async function getStaticPaths(): Promise<{
-  paths: WithParams<{ id: string }>[];
-  fallback: boolean | string;
-}> {
-  const response = await ApiCaller<PostType[]>({
-    method: "get",
-    url: endpoints.POSTS,
-  });
+//export async function getStaticPaths(): Promise<{
+//paths: WithParams<{ id: string }>[];
+//fallback: boolean | string;
+//}> {
+//const response = await ApiCaller<PostType[]>({
+//method: "get",
+//url: endpoints.POSTS,
+//});
 
-  if (response.status) {
-    return {
-      paths: response.data?.length
-        ? response.data.map(({ _id }) => ({
-            params: { id: _id },
-          }))
-        : [],
-      fallback: false,
-    };
-  }
+//if (response.status) {
+//return {
+//paths: response.data?.length
+//? response.data.map(({ _id }) => ({
+//params: { id: _id },
+//}))
+//: [],
+//fallback: false,
+//};
+//}
 
-  return {
-    paths: [],
-    fallback: false,
-  };
-}
+//return {
+//paths: [],
+//fallback: false,
+//};
+//}
 
-export async function getStaticProps({
+export async function getServerSideProps({
   params: { id },
 }: WithParams<{ id: string }>): Promise<WithProps<{ post: PostType | null }>> {
   const response = await ApiCaller({

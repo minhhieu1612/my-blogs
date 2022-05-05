@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,6 +5,7 @@ import React, { PropsWithChildren } from "react";
 import useUser from "../libs/useUser";
 import { User } from "../pages/api/user";
 import ApiCaller from "../utils/services/ApiCaller";
+import Loader from "./Loader";
 
 const LayoutAdmin = ({
   title = "",
@@ -50,14 +50,7 @@ const LayoutAdmin = ({
             <main>{children}</main>
           </div>
         ) : (
-          <div className="min-h-screen flex items-center justify-center">
-            <Image
-              src="/images/a4f2cb80ff2ae2772e80bf30e9d78d4c.gif"
-              width={100}
-              height={100}
-              alt=""
-            />
-          </div>
+          <Loader className="min-h-screen" />
         )}
       </div>
     </div>

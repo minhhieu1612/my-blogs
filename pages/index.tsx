@@ -10,14 +10,14 @@ const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
     <Layout title="This is Calvin's blog">
       <div className="page-container py-5">
         <div className="introduce-section pb-5">
-          <h2 className="text-3xl font-bold">About Me</h2>
+          <h2 className="text-3xl font-bold mb-3">About Me</h2>
           <p>
             A dedicated, diligent, ready-to-learn person. I am passionate about
             clean code, software architecture, and sharing knowledge. Specialize
             in JS/TS and more... ✨✨🚀
           </p>
         </div>
-        <div className="posts">
+        <div className="posts mt-2">
           <h2 className="text-3xl font-bold mb-2">Posts</h2>
           <Posts posts={posts} />
         </div>
@@ -26,7 +26,7 @@ const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
   );
 };
 
-export async function getStaticProps(): Promise<
+export async function getServerSideProps(): Promise<
   WithProps<{ posts: PostType[] }>
 > {
   const response = await ApiCaller({
