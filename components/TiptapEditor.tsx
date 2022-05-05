@@ -22,10 +22,6 @@ type ActiveButtonType = {
 };
 
 const MenuBar = ({ editor }: { editor: any }) => {
-  if (!editor) {
-    return;
-  }
-
   const addImage = useCallback(() => {
     const url = window.prompt("URL");
 
@@ -36,7 +32,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
 
   const setLink = useCallback(() => {
     if (!editor) {
-      return;
+      return <></>;
     }
 
     const previousUrl = editor.getAttributes("link").href;
